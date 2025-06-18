@@ -20,5 +20,9 @@ captures
 #GoogleService
 google-services.json
 
-**/Pods
+#GoogleService Plist Location
 **/Firebase/*
+
+#Pod builds
+**/Pods
+Podfile.lock
