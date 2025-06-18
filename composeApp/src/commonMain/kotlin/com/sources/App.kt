@@ -55,6 +55,19 @@ fun App() {
                 }
             }
 
+            val launchVerify: () -> Unit = {
+                coroutineScope.launch {
+                    auth.verifyOtp(
+                        verificationId = verificationIds,
+                        otpCode = otpCode
+                    ).onSuccess {
+                        println("OTP => Firebase ID Token: $it")
+                    }.onFailure {
+                        println("OTP => Firebase ID Token: Failed to fetch: ${it.message}")
+                    }
+                }
+            }
+
             val listener = object : OtpListener {
                 override fun onSent(
                     verificationId: String,
@@ -69,6 +82,7 @@ fun App() {
 
                 override fun onInstantVerified(code: String?) {
                     otpCode = code ?: ""
+                    launchVerify()
                 }
             }
 
@@ -113,18 +127,7 @@ fun App() {
                     )
                     Button(
                         enabled = otpCode.length == 6,
-                        onClick = {
-                            coroutineScope.launch {
-                                auth.verifyOtp(
-                                    verificationId = verificationIds,
-                                    otpCode = otpCode
-                                ).onSuccess {
-                                    println("OTP => Firebase ID Token: $it")
-                                }.onFailure {
-                                    println("OTP => Firebase ID Token: Failed to fetch: ${it.message}")
-                                }
-                            }
-                        }
+                        onClick = launchVerify
                     ) {
                         Text("Verify Otp")
                     }
