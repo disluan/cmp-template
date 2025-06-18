@@ -21,7 +21,7 @@ captures
 google-services.json
 
 #GoogleService Plist Location
-**/Firebase/*
+iosApp/Firebase/
 
 #Pod builds
-**/Pods
+iosApp/Pods/
