@@ -19,5 +19,6 @@ captures
 
 #GoogleService
 google-services.json
-Dev-GoogleService-Info.plist
-Prd-GoogleService-Info.plist
+
+**/Pods
+**/Firebase/*
