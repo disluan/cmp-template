@@ -1,0 +1,16 @@
+TEAM_ID=Q7U637DH78
+APPLICATION_ID=app.gpdi.riau
+
+PRODUCT_NAME=Template
+
+APPLICATION_NAME[config=Debug]=$(PRODUCT_NAME) Debug
+APPLICATION_NAME[config=Release]=$(PRODUCT_NAME)
+
+PRODUCT_BUNDLE_IDENTIFIER[config=Debug]=$(APPLICATION_ID).debug
+PRODUCT_BUNDLE_IDENTIFIER[config=Release]=$(APPLICATION_ID)
+
+CURRENT_PROJECT_VERSION=10000
+MARKETING_VERSION=1.0.0
+
+GOOGLE_SERVICE[config=Debug]=$(SRCROOT)/Firebase/Dev-GoogleService-Info.plist
+GOOGLE_SERVICE[config=Release]=$(SRCROOT)/Firebase/Prd-GoogleService-Info.plist
