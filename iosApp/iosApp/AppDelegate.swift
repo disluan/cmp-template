@@ -9,7 +9,7 @@ import FirebaseAuth
 import FirebaseCore
 import FirebaseMessaging
 
-class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNotificationCenterDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -36,26 +36,30 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNot
     
     func application(
         _ application: UIApplication,
+        open url: URL,
+        options: [UIApplication.OpenURLOptionsKey : Any]
+    ) -> Bool {
+        return Auth.auth().canHandle(url);
+    }
+    
+    func application(
+        _ application: UIApplication,
         didReceiveRemoteNotification notification: [AnyHashable : Any],
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
     ) {
         if Auth.auth().canHandleNotification(notification) {
             completionHandler(.noData)
-            return
+        } else {
+            Messaging.messaging().appDidReceiveMessage(notification)
+            completionHandler(.newData)
         }
     }
 
     func application(_ application: UIApplication,
-                     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data){
+                     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+    ){
         Auth.auth().setAPNSToken(deviceToken, type: .unknown)
-    }
-    
-    func application(
-        _ application: UIApplication,
-        open url: URL,
-        options: [UIApplication.OpenURLOptionsKey : Any]
-    ) -> Bool {
-        return Auth.auth().canHandle(url);
+        Messaging.messaging().apnsToken = deviceToken
     }
 
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
@@ -67,27 +71,26 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate, UNUserNot
             )
         }
     }
+}
 
+extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
-        didReceive response: UNNotificationResponse,
-        withCompletionHandler completionHandler: @escaping () -> Void
-    ) {
+        willPresent notification: UNNotification
+    ) async -> UNNotificationPresentationOptions {
+        return [.badge, .banner, .sound]
+    }
+    
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        didReceive response: UNNotificationResponse
+    ) async {
         let userInfo = response.notification.request.content.userInfo
         NotificationCenter.default.post(
             name: .onNotificationClicked,
             object: nil,
             userInfo: userInfo
         )
-        completionHandler()
-    }
-
-    func userNotificationCenter(
-        _ center: UNUserNotificationCenter,
-        willPresent notification: UNNotification,
-        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
-    ) {
-        completionHandler([.banner, .sound])
     }
 }
 
