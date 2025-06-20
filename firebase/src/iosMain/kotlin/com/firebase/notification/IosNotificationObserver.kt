@@ -9,11 +9,11 @@ class IosNotificationObserver: NotificationObserver {
         }
     }
 
-    override suspend fun observeNotification(onClick: (Map<String, Any?>) -> Unit) {
+    override suspend fun observeNotification(onClick: (Map<String, String?>) -> Unit) {
         addObserverNotification("onNotificationClicked") { payload ->
             val map = payload.mapNotNull { data ->
                 (data.key as? String)?.takeIf { it.isNotBlank() }?.let { key ->
-                    key to data.value
+                    key to data.value?.toString()
                 }
             }.toMap()
 

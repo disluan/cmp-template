@@ -25,6 +25,7 @@ kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core",
 android-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 android-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 android-firebase-auth = { module = "com.google.firebase:firebase-auth" }
+android-firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin"}
 koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = "koin"}
@@ -46,5 +47,5 @@ convention-compose = { id = "com.convention.compose", version = "unspecified" }
 convention-library = { id = "com.convention.library", version = "unspecified" }
 
 [bundles]
-android-firebase = ["android-firebase-analytics", "android-firebase-auth"]
+android-firebase = ["android-firebase-analytics", "android-firebase-auth", "android-firebase-messaging"]
 koin = ["koin-core", "koin-compose", "koin-viewmodel", "koin-viewmodel-navigation"]

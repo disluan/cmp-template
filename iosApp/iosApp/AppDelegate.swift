@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
 
         return true
     }
-    
+
     func application(
         _ application: UIApplication,
         open url: URL,
@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
     ) -> Bool {
         return Auth.auth().canHandle(url);
     }
-    
+
     func application(
         _ application: UIApplication,
         didReceiveRemoteNotification notification: [AnyHashable : Any],
@@ -80,7 +80,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     ) async -> UNNotificationPresentationOptions {
         return [.badge, .banner, .sound]
     }
-    
+
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse
