@@ -1,5 +1,8 @@
 package com.firebase.notification
 
+import android.util.Log
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import kotlinx.coroutines.flow.filterNotNull
 
 class AndroidPushNotification : PushNotification {
@@ -16,5 +19,24 @@ class AndroidPushNotification : PushNotification {
         notification.token.filterNotNull().collect {
             onChanged(it)
         }
+    }
+
+    override fun fetchNewToken(onCompletion: (String) -> Unit) {
+        Firebase.messaging.token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.e("PushNotificationManager", "Fetching token failed", task.exception)
+                return@addOnCompleteListener
+            }
+
+            onCompletion(task.result)
+        }
+    }
+
+    override fun subscribeToTopic(topic: String) {
+        Firebase.messaging.subscribeToTopic(topic)
+    }
+
+    override fun unsubscribeToTopic(topic: String) {
+        Firebase.messaging.unsubscribeFromTopic(topic)
     }
 }

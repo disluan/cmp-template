@@ -48,6 +48,10 @@ fun App() {
 
             val notification = koinInject<PushNotification>()
 
+            notification.fetchNewToken {
+                println("Firebase Request New Token: $it")
+            }
+
             LaunchedEffect(Unit) {
                 notification.onNotificationClicked {
                     phone = it["id"].toString()

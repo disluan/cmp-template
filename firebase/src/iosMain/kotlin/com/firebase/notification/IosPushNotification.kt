@@ -1,5 +1,6 @@
 package com.firebase.notification
 
+import cocoapods.FirebaseMessaging.FIRMessaging
 import platform.Foundation.NSNotificationCenter
 import platform.darwin.NSObjectProtocol
 
@@ -19,6 +20,25 @@ class IosPushNotification : PushNotification {
         notificationTokenObserver = addObserver("onNewToken") { payload ->
             onChanged(payload["fcmToken"] as String)
         }
+    }
+
+    override fun fetchNewToken(onCompletion: (String) -> Unit) {
+        FIRMessaging.messaging().tokenWithCompletion { token, error ->
+            if (!token.isNullOrBlank()) {
+                onCompletion(token)
+                return@tokenWithCompletion
+            }
+
+            println("PushNotificationManager: Fetching token failed: ${error?.localizedDescription}")
+        }
+    }
+
+    override fun subscribeToTopic(topic: String) {
+        FIRMessaging.messaging().subscribeToTopic(topic)
+    }
+
+    override fun unsubscribeToTopic(topic: String) {
+        FIRMessaging.messaging().unsubscribeFromTopic(topic)
     }
 
     private fun addObserver(
