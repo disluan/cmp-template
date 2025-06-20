@@ -9,7 +9,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,9 +21,9 @@ import com.firebase.auth.Auth
 import com.firebase.auth.AuthStatus
 import com.firebase.auth.OtpListener
 import com.firebase.auth.ResendTokenHandle
-import com.firebase.notification.NotificationObserver
 import com.sources.di.mainModule
 import com.sources.di.sharedModule
+import com.sources.utilities.LaunchDetailsNotification
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinIsolatedContext
@@ -40,22 +39,11 @@ fun App() {
         MaterialTheme {
             val coroutineScope = rememberCoroutineScope()
             val auth = koinInject<Auth>()
-            val notification = koinInject<NotificationObserver>()
 
             var hasLogin by remember { mutableStateOf(false) }
             var phone by remember { mutableStateOf("") }
             var otpCode by remember { mutableStateOf("") }
             var verificationIds by remember { mutableStateOf("") }
-
-            LaunchedEffect(Unit) {
-                notification.observeNewToken {
-                    println("Firebase FCM New Token: $it")
-                }
-
-                notification.observeNotification {
-                    println("Firebase Notification Clicked: $it")
-                }
-            }
 
             auth.statusListener { status ->
                 hasLogin = when(status) {
@@ -97,6 +85,10 @@ fun App() {
                     otpCode = code ?: ""
                     launchVerify()
                 }
+            }
+
+            LaunchDetailsNotification {
+                println("Firebase Notifications Details Clicked: $it")
             }
 
             Column(

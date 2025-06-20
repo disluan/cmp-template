@@ -1,4 +1,4 @@
-package com.firebase.activity
+package com.firebase.initializer
 
 import android.app.Activity
 import android.app.Application
@@ -8,6 +8,9 @@ import androidx.startup.Initializer
 import java.lang.ref.WeakReference
 
 internal lateinit var activityHolder: WeakReference<Activity>
+    private set
+
+internal lateinit var appContext: Context
     private set
 
 internal class ActivityInitializer: Initializer<Unit> {
@@ -36,6 +39,7 @@ internal class ActivityInitializer: Initializer<Unit> {
     }
 
     override fun create(context: Context) {
+        appContext = context.applicationContext
         (context.applicationContext as Application).registerActivityLifecycleCallbacks(callback)
     }
 

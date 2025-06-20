@@ -1,6 +1,6 @@
 package com.firebase.auth
 
-import com.firebase.activity.activityHolder
+import com.firebase.initializer.activityHolder
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
