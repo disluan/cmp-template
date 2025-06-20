@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-object NotificationObserver {
+object AndroidNotification {
     private val _data = MutableStateFlow<Map<String, String?>?>(null)
     val data = _data.asStateFlow()
 

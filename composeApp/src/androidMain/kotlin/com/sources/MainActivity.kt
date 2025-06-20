@@ -2,22 +2,30 @@ package com.sources
 
 import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.content.ContextCompat
+import androidx.core.app.NotificationManagerCompat
 import com.firebase.initializer.Notification
-import com.firebase.notification.NotificationObserver
+import com.firebase.notification.AndroidNotification
 import com.firebase.notification.notificationDataKeys
 
 class MainActivity : ComponentActivity() {
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (!isGranted) {
+            showRejectedNotificationPermission()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
@@ -40,28 +48,23 @@ class MainActivity : ComponentActivity() {
             notificationData.put(key, bundle.getString(key))
         }
 
-        NotificationObserver.setData(notificationData)
-    }
-
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission(),
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            Log.e("Notification", "GRANTED")
-        } else {
-            Log.e("Notification", "REJECTED")
-        }
+        AndroidNotification.setData(notificationData)
     }
 
     private fun askNotificationPermission() {
-        // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) !=
-                PackageManager.PERMISSION_GRANTED
-            ) {
+            if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
+    }
+
+    private fun showRejectedNotificationPermission() {
+        Toast.makeText(
+            this,
+            R.string.notification_permission_rejected,
+            Toast.LENGTH_LONG
+        ).show()
     }
 }
 

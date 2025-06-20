@@ -14,7 +14,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        NotificationObserver.setToken(token)
+        AndroidNotification.setToken(token)
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
