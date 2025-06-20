@@ -12,7 +12,7 @@
                 android:value="androidx.startup" />
         </provider>
         <service
-            android:name="com.firebase.notification.NotificationService"
+            android:name="com.firebase.notification.FirebaseNotificationService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

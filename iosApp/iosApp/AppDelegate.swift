@@ -71,6 +71,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
             )
         }
     }
+
+    func applicationWillTerminate(_ application: UIApplication) {
+        IosPushNotification.companion.disposeObserver()
+    }
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
@@ -85,11 +89,10 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse
     ) async {
-        let userInfo = response.notification.request.content.userInfo
         NotificationCenter.default.post(
             name: .onNotificationClicked,
             object: nil,
-            userInfo: userInfo
+            userInfo: response.notification.request.content.userInfo
         )
     }
 }

@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,9 +22,9 @@ import com.firebase.auth.Auth
 import com.firebase.auth.AuthStatus
 import com.firebase.auth.OtpListener
 import com.firebase.auth.ResendTokenHandle
+import com.firebase.notification.PushNotification
 import com.sources.di.mainModule
 import com.sources.di.sharedModule
-import com.sources.utilities.LaunchDetailsNotification
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinIsolatedContext
@@ -44,6 +45,18 @@ fun App() {
             var phone by remember { mutableStateOf("") }
             var otpCode by remember { mutableStateOf("") }
             var verificationIds by remember { mutableStateOf("") }
+
+            val notification = koinInject<PushNotification>()
+
+            LaunchedEffect(Unit) {
+                notification.onNotificationClicked {
+                    phone = it["id"].toString()
+                }
+
+                notification.onNotificationNewToken {
+                    println("Firebase New Token: $it")
+                }
+            }
 
             auth.statusListener { status ->
                 hasLogin = when(status) {
@@ -87,10 +100,6 @@ fun App() {
                 }
             }
 
-            LaunchDetailsNotification {
-                println("Firebase Notifications Details Clicked: $it")
-            }
-
             Column(
                 modifier = Modifier
                     .safeContentPadding()
@@ -98,6 +107,7 @@ fun App() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+
                 if (hasLogin) {
                     Button(
                         onClick = {

@@ -14,7 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import com.firebase.initializer.Notification
-import com.firebase.notification.NotificationReceiver
+import com.firebase.notification.NotificationObserver
+import com.firebase.notification.notificationDataKeys
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,11 +36,11 @@ class MainActivity : ComponentActivity() {
         val bundle = intent.extras ?: return
         val notificationData = mutableMapOf<String, String?>()
 
-        NotificationReceiver.dataKeys.forEach { key ->
+        notificationDataKeys.forEach { key ->
             notificationData.put(key, bundle.getString(key))
         }
 
-        NotificationReceiver.postNotification(notificationData)
+        NotificationObserver.setData(notificationData)
     }
 
     private val requestPermissionLauncher = registerForActivityResult(
