@@ -9,6 +9,7 @@ firebase-bom = "33.15.0"
 androidx-startup = "1.2.0"
 kotlinx-coroutines = "1.10.2"
 koin = "4.1.0"
+ktor = "3.2.0"
 
 [libraries]
 #Convention
@@ -16,21 +17,33 @@ gradle-android = { module = "com.android.tools.build:gradle", version.ref = "agp
 gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 gradle-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose" }
 
-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" } #used in convention
 lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 
 androidx-startup = { module = "androidx.startup:startup-runtime", version.ref = "androidx-startup" }
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+
+#FIREBASE
 android-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 android-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 android-firebase-auth = { module = "com.google.firebase:firebase-auth" }
 android-firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
 
+#KOIN
 koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin"}
 koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = "koin"}
 koin-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koin"}
 koin-viewmodel-navigation = { group = "io.insert-koin", name = "koin-compose-viewmodel-navigation", version.ref = "koin"}
+
+#KTOR
+ktor-auth = { group = "io.ktor", name = "ktor-client-auth", version.ref = "ktor" }
+ktor-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
+ktor-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
+ktor-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
+ktor-content = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -40,6 +53,7 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 kotlin-cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 # Plugins defined by this project`
 convention-application = { id = "com.convention.application", version = "unspecified" }
@@ -48,4 +62,5 @@ convention-library = { id = "com.convention.library", version = "unspecified" }
 
 [bundles]
 android-firebase = ["android-firebase-analytics", "android-firebase-auth", "android-firebase-messaging"]
-koin = ["koin-core", "koin-compose", "koin-viewmodel", "koin-viewmodel-navigation"]
+koin = ["koin-core", "koin-compose", "koin-viewmodel", "koin-viewmodel-navigation"] #used in convention
+ktor = ["ktor-auth", "ktor-core", "ktor-logging", "ktor-content", "ktor-serialization"]

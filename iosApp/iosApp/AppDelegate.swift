@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate {
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey : Any]
     ) -> Bool {
-        return Auth.auth().canHandle(url);
+        return Auth.auth().canHandle(url)
     }
 
     func application(

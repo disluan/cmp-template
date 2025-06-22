@@ -24,12 +24,12 @@ class IosPushNotification : PushNotification {
 
     override fun fetchNewToken(onCompletion: (String) -> Unit) {
         FIRMessaging.messaging().tokenWithCompletion { token, error ->
-            if (!token.isNullOrBlank()) {
-                onCompletion(token)
+            if (error != null) {
+                println("PushNotification: Fetching token failed: ${error.localizedDescription}")
                 return@tokenWithCompletion
             }
 
-            println("PushNotificationManager: Fetching token failed: ${error?.localizedDescription}")
+            token?.let { onCompletion(it) }
         }
     }
 

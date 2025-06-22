@@ -24,7 +24,7 @@ class AndroidPushNotification : PushNotification {
     override fun fetchNewToken(onCompletion: (String) -> Unit) {
         Firebase.messaging.token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
-                Log.e("PushNotificationManager", "Fetching token failed", task.exception)
+                Log.e("PushNotification", "Fetching token failed", task.exception)
                 return@addOnCompleteListener
             }
 

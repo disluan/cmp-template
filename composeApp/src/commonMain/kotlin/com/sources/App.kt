@@ -18,13 +18,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.core.di.coreModule
 import com.firebase.auth.Auth
 import com.firebase.auth.AuthStatus
 import com.firebase.auth.OtpListener
 import com.firebase.auth.ResendTokenHandle
 import com.firebase.notification.PushNotification
 import com.sources.di.mainModule
-import com.sources.di.sharedModule
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinIsolatedContext
@@ -35,7 +35,7 @@ import org.koin.dsl.koinApplication
 @Preview
 fun App() {
     KoinIsolatedContext(context = koinApplication {
-        modules(mainModule, sharedModule)
+        modules(mainModule, coreModule)
     }) {
         MaterialTheme {
             val coroutineScope = rememberCoroutineScope()
@@ -47,10 +47,6 @@ fun App() {
             var verificationIds by remember { mutableStateOf("") }
 
             val notification = koinInject<PushNotification>()
-
-            notification.fetchNewToken {
-                println("Firebase Request New Token: $it")
-            }
 
             LaunchedEffect(Unit) {
                 notification.onNotificationClicked {
