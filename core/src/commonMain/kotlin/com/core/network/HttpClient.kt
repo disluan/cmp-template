@@ -4,6 +4,7 @@ import com.firebase.auth.Auth
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.HttpResponseValidator
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.ResponseException
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.AuthConfig
@@ -18,6 +19,8 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.PlatformUtils
+import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.io.IOException
 import kotlinx.serialization.json.Json
 
 internal object HttpClient {
@@ -40,6 +43,11 @@ internal object HttpClient {
         return HttpClient {
             expectSuccess = true
 
+            install(HttpTimeout) {
+                requestTimeoutMillis = 60_000       // Total max duration of the request
+                connectTimeoutMillis = 10_000       // Time to connect to the server
+                socketTimeoutMillis = 30_000        // Time to send or receive chunks
+            }
             install(ContentNegotiation) {
                 json(json = jsonConfig)
             }
@@ -56,6 +64,7 @@ internal object HttpClient {
                 handleResponseExceptionWithRequest { exception, _ ->
                     when(exception) {
                         is ResponseException -> throw ApiException(exception.response.body<ApiError>())
+                        is IOException, is TimeoutCancellationException -> throw NoInternetException()
                         else -> throw exception
                     }
                 }
