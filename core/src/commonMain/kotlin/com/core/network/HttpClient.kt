@@ -58,6 +58,7 @@ internal object HttpClient {
                 level = loggerLevel
             }
             defaultRequest {
+                url(baseUrl)
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
             }
             HttpResponseValidator {

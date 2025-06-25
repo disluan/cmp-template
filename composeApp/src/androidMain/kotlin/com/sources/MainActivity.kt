@@ -42,12 +42,9 @@ class MainActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         val bundle = intent.extras ?: return
-        val notificationData = mutableMapOf<String, String?>()
-
-        notificationDataKeys.forEach { key ->
-            notificationData.put(key, bundle.getString(key))
+        val notificationData = bundle.keySet().associateWith { key ->
+            runCatching { bundle.getString(key) }.getOrNull()
         }
-
         AndroidNotification.setData(notificationData)
     }
 

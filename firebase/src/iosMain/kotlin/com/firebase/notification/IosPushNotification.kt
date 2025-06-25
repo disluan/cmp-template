@@ -10,7 +10,11 @@ class IosPushNotification : PushNotification {
         if (notificationDataObserver != null) return
 
         notificationDataObserver = addObserver("onNotificationClicked") { payload ->
-            onClick(notificationDataKeys.associateWith { payload[it] as? String? })
+            val newData = payload.keys.filterIsInstance<String>().associateWith { key ->
+                payload[key] as? String
+            }
+
+            onClick(newData)
         }
     }
 

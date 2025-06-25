@@ -50,6 +50,7 @@ fun App() {
 
             LaunchedEffect(Unit) {
                 notification.onNotificationClicked {
+                    println("Firebase Notification Data: $it")
                     phone = it["id"].toString()
                 }
 

@@ -16,6 +16,7 @@ kotlin {
         }
         commonMain.dependencies {
             api(project(":firebase"))
+            api(libs.bundles.lifecycle)
             implementation(libs.koin.core)
             implementation(libs.bundles.ktor)
         }

@@ -18,8 +18,8 @@ gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.
 gradle-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose" }
 
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" } #used in convention
+lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 
 androidx-startup = { module = "androidx.startup:startup-runtime", version.ref = "androidx-startup" }
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
@@ -64,3 +64,4 @@ convention-library = { id = "com.convention.library", version = "unspecified" }
 android-firebase = ["android-firebase-analytics", "android-firebase-auth", "android-firebase-messaging"]
 koin = ["koin-core", "koin-compose", "koin-viewmodel", "koin-viewmodel-navigation"] #used in convention
 ktor = ["ktor-auth", "ktor-core", "ktor-logging", "ktor-content", "ktor-serialization"]
+lifecycle = ["lifecycle-runtime", "lifecycle-viewmodel"]
