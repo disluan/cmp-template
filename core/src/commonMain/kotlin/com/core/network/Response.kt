@@ -8,8 +8,6 @@ object NoContent
 @Serializable
 data class ApiError(val code: Int, val message: String)
 
-class NoInternetException() : Exception(message = "There is no internet connection")
+class NoInternetException() : Exception("There is no internet connection")
 
-class ApiException(apiError: ApiError) : Exception(
-    message = "Error code: ${apiError.code} with message: ${apiError.message}"
-)
+class ApiException(apiError: ApiError) : Exception("Error code: ${apiError.code} with message: ${apiError.message}")

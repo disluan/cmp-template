@@ -32,3 +32,5 @@ dependencyResolutionManagement {
 include(":composeApp")
 include(":firebase")
 include(":core")
+include(":utility")
+include(":theme")
